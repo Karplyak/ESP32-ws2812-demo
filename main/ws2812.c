@@ -43,7 +43,7 @@ typedef union {
 } rmtPulsePair;
 
 static uint8_t *ws2812_buffer = NULL;
-static unsigned int ws2812_pos, ws2812_len, ws2812_half;
+static uint16_t ws2812_pos, ws2812_len, ws2812_half;
 static xSemaphoreHandle ws2812_sem = NULL;
 static rmtPulsePair ws2812_bits[2];
 
@@ -69,7 +69,7 @@ void ws2812_initRMTChannel(int rmtChannel)
 
 void ws2812_copy()
 {
-  unsigned int i, j, offset, len, bit;
+  uint16_t i, j, offset, len, bit;
 
 
   offset = ws2812_half * MAX_PULSES;
@@ -148,9 +148,9 @@ void ws2812_init(int gpioNum)
   return;
 }
 
-void ws2812_setColors(unsigned int length, rgbVal *array)
+void ws2812_setColors(uint16_t length, rgbVal *array)
 {
-  unsigned int i;
+  uint16_t i;
 
 
   ws2812_len = (length * 3) * sizeof(uint8_t);

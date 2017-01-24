@@ -21,10 +21,11 @@
 
 void rainbow(void *pvParameters)
 {
-  const uint8_t anim_step = 10;
-  const uint8_t anim_max = 250;
-  const uint8_t pixel_count = 9; // Number of your "pixels"
-  const uint8_t delay = 25; // duration between color changes
+  const uint8_t dim_div = 8;
+  const uint8_t anim_step = 8;
+  const uint8_t anim_max = 256 - anim_step;
+  const uint16_t pixel_count = 256; // Number of your "pixels"
+  const uint8_t delay = 0; // duration between color changes
   rgbVal color = makeRGBVal(anim_max, 0, 0);
   uint8_t step = 0;
   rgbVal color2 = makeRGBVal(anim_max, 0, 0);
@@ -38,8 +39,8 @@ void rainbow(void *pvParameters)
     color = color2;
     step = step2;
 
-    for (uint8_t i = 0; i < pixel_count; i++) {
-      pixels[i] = color;
+    for (uint16_t i = 0; i < pixel_count; i++) {
+      pixels[i] = makeRGBVal(color.r/dim_div, color.g/dim_div, color.b/dim_div);
 
       if (i == 1) {
         color2 = color;
@@ -91,7 +92,7 @@ void app_main()
   nvs_flash_init();
 
   ws2812_init(WS2812_PIN);
-  xTaskCreate(rainbow, "ws2812 rainbow demo", 256, NULL, 10, NULL);
+  xTaskCreate(rainbow, "ws2812 rainbow demo", 4096, NULL, 10, NULL);
 
   return;
 }
